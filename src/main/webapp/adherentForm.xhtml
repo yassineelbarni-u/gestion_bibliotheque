@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+<ui:composition template="/template.xhtml">
+    <ui:define name="title">
+        #{adherentBean.adherent.id == 0 ? 'Ajouter' : 'Modifier'} un adhérent
+    </ui:define>
+    <ui:define name="content">
+        
+        <h2>#{adherentBean.adherent.id == 0 ? '➕ Ajouter' : '✏️ Modifier'} un adhérent</h2>
+        
+        <h:form style="max-width: 500px;">
+            <h:inputHidden value="#{adherentBean.adherent.id}"/>
+            
+            <div class="form-group" style="margin-bottom: 20px;">
+                <h:outputLabel value="Nom:" for="nom" style="display: block; margin-bottom: 5px; font-weight: bold;"/>
+                <h:inputText id="nom" value="#{adherentBean.adherent.nom}" required="true"
+                             style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"/>
+                <h:message for="nom" style="color: red;"/>
+            </div>
+            
+            <div class="form-group" style="margin-bottom: 20px;">
+                <h:outputLabel value="Prénom:" for="prenom" style="display: block; margin-bottom: 5px; font-weight: bold;"/>
+                <h:inputText id="prenom" value="#{adherentBean.adherent.prenom}" required="true"
+                             style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"/>
+                <h:message for="prenom" style="color: red;"/>
+            </div>
+            
+            <div class="form-group" style="margin-bottom: 20px;">
+                <h:outputLabel value="Email:" for="email" style="display: block; margin-bottom: 5px; font-weight: bold;"/>
+                <h:inputText id="email" value="#{adherentBean.adherent.email}" required="true"
+                             style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    <f:validateRegex pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"/>
+                </h:inputText>
+                <h:message for="email" style="color: red;"/>
+            </div>
+            
+            <div class="form-group" style="margin-bottom: 20px;">
+                <h:outputLabel value="Téléphone:" for="telephone" style="display: block; margin-bottom: 5px; font-weight: bold;"/>
+                <h:inputText id="telephone" value="#{adherentBean.adherent.telephone}"
+                             style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"/>
+            </div>
+            
+            <div style="margin-top: 30px;">
+                <h:commandButton 
+                    value="#{adherentBean.adherent.id == 0 ? 'Ajouter' : 'Modifier'}" 
+                    action="#{adherentBean.enregistrer}"
+                    styleClass="btn btn-primary"/>
+                
+                <h:button value="Annuler" outcome="adherents" styleClass="btn btn-danger"/>
+            </div>
+        </h:form>
+        
+    </ui:define>
+</ui:composition>
+</html>

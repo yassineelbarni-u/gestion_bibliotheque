@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+<ui:composition template="/template.xhtml">
+    <ui:define name="title">
+        #{livreBean.livre.id == 0 ? 'Ajouter' : 'Modifier'} un livre
+    </ui:define>
+    <ui:define name="content">
+        
+        <h2>#{livreBean.livre.id == 0 ? '➕ Ajouter' : '✏️ Modifier'} un livre</h2>
+        
+        <h:form style="max-width: 500px;">
+            <h:inputHidden value="#{livreBean.livre.id}"/>
+            
+            <div class="form-group" style="margin-bottom: 20px;">
+                <h:outputLabel value="Titre:" for="titre" style="display: block; margin-bottom: 5px; font-weight: bold;"/>
+                <h:inputText id="titre" value="#{livreBean.livre.titre}" required="true"
+                             style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"/>
+                <h:message for="titre" style="color: red;"/>
+            </div>
+            
+            <div class="form-group" style="margin-bottom: 20px;">
+                <h:outputLabel value="Auteur:" for="auteur" style="display: block; margin-bottom: 5px; font-weight: bold;"/>
+                <h:inputText id="auteur" value="#{livreBean.livre.auteur}" required="true"
+                             style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"/>
+                <h:message for="auteur" style="color: red;"/>
+            </div>
+            
+            <div class="form-group" style="margin-bottom: 20px;">
+                <h:outputLabel value="Stock:" for="stock" style="display: block; margin-bottom: 5px; font-weight: bold;"/>
+                <h:inputText id="stock" value="#{livreBean.livre.stock}" required="true"
+                             style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    <f:validateLongRange minimum="0"/>
+                </h:inputText>
+                <h:message for="stock" style="color: red;"/>
+            </div>
+            
+            <div style="margin-top: 30px;">
+                <h:commandButton 
+                    value="#{livreBean.livre.id == 0 ? 'Ajouter' : 'Modifier'}" 
+                        action="#{livreBean.enregistrer}"
+                    styleClass="btn btn-primary"/>
+                
+                <h:button value="Annuler" outcome="livres" styleClass="btn btn-danger"/>
+            </div>
+        </h:form>
+        
+    </ui:define>
+</ui:composition>
+</html>

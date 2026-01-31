@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+<h:head>
+    <title>Connexion - Gestion Bibliothèque</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 350px;
+        }
+        h2 { text-align: center; color: #333; margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; color: #555; font-weight: bold; }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn-login:hover { background: #5568d3; }
+        .error-msg { color: red; margin-top: 10px; }
+    </style>
+</h:head>
+<h:body>
+    <div class="login-container">
+        <h2>🔐 Connexion Bibliothécaire</h2>
+        <h:form>
+            <h:messages styleClass="error-msg" globalOnly="true"/>
+            
+            <div class="form-group">
+                <h:outputLabel value="Nom d'utilisateur:" for="username"/>
+                <h:inputText id="username" value="#{loginBean.username}" required="true" 
+                             requiredMessage="Le nom d'utilisateur est obligatoire"/>
+            </div>
+            
+            <div class="form-group">
+                <h:outputLabel value="Mot de passe:" for="password"/>
+                <h:inputSecret id="password" value="#{loginBean.password}" required="true"
+                               requiredMessage="Le mot de passe est obligatoire"/>
+            </div>
+            
+            <h:commandButton value="Se connecter" action="#{loginBean.login}" 
+                             styleClass="btn-login"/>
+        </h:form>
+        
+        <p style="text-align: center; margin-top: 20px; color: #888; font-size: 12px;">
+            Compte par défaut: admin / admin123
+        </p>
+    </div>
+</h:body>
+</html>

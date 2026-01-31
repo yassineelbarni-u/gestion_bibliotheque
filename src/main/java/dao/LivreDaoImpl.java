@@ -34,6 +34,7 @@ public class LivreDaoImpl implements ILivreDao {
             ps.close();
             ps2.close();
             rs.close();
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }

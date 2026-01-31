@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+<ui:composition template="/template.xhtml">
+    <ui:define name="title">Liste des Livres</ui:define>
+    <ui:define name="content">
+        
+        <h2>📖 Liste des Livres</h2>
+        
+        <h:form>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+                <h:commandButton value="➕ Ajouter un livre" 
+                                 action="#{livreBean.nouveauLivre}" 
+                                 styleClass="btn btn-success"/>
+                
+                <div class="search-box" style="flex: 1; max-width: 500px;">
+                    <h:inputText value="#{livreBean.motCle}" 
+                                 placeholder="Rechercher (titre ou auteur)..."/>
+                    <h:commandButton value="🔍 Chercher" 
+                                     action="#{livreBean.chercher}" 
+                                     styleClass="btn btn-primary"/>
+                    <h:commandButton value="↻ Tout afficher" 
+                                     action="#{livreBean.afficherLivres}" 
+                                     styleClass="btn btn-warning"/>
+                </div>
+            </div>
+            
+            <h:messages styleClass="messages"/>
+            
+            <h:dataTable value="#{livreBean.livres}" var="livre" 
+                         styleClass="table" rendered="#{not empty livreBean.livres}">
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                    #{livre.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Titre</f:facet>
+                    #{livre.titre}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Auteur</f:facet>
+                    #{livre.auteur}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Stock</f:facet>
+                    <span style="color: #{livre.stock > 0 ? 'green' : 'red'}; font-weight: bold;">
+                        #{livre.stock}
+                    </span>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Actions</f:facet>
+                    <h:commandButton value="✏️ Modifier" 
+                                     action="#{livreBean.editer(livre.id)}" 
+                                     styleClass="btn btn-warning"/>
+                    <h:commandButton value="🗑️ Supprimer" 
+                                     action="#{livreBean.supprimer(livre.id)}" 
+                                     styleClass="btn btn-danger"
+                                     onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce livre ?');">
+                        <f:ajax execute="@form" render="@form"/>
+                    </h:commandButton>
+                </h:column>
+            </h:dataTable>
+            
+            <h:panelGroup rendered="#{empty livreBean.livres}">
+                <p style="text-align: center; color: #888; margin-top: 30px;">
+                    Aucun livre trouvé.
+                </p>
+            </h:panelGroup>
+        </h:form>
+        
+    </ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+<ui:composition template="/template.xhtml">
+    <ui:define name="title">Liste des Adhérents</ui:define>
+    <ui:define name="content">
+        
+        <h2>Liste des Adhérents</h2>
+        
+        <h:form>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+                <h:commandButton value=" Ajouter un adhérent" 
+                                 action="#{adherentBean.nouveauAdherent}" 
+                                 styleClass="btn btn-success"/>
+                
+                <div class="search-box" style="flex: 1; max-width: 500px;">
+                    <h:inputText value="#{adherentBean.motCle}" 
+                                 placeholder="Rechercher (nom, prénom, email)..."/>
+                    <h:commandButton value="Chercher" 
+                                     action="#{adherentBean.chercher}" 
+                                     styleClass="btn btn-primary"/>
+                    <h:commandButton value="Tout afficher" 
+                                     action="#{adherentBean.afficherAdherents}" 
+                                     styleClass="btn btn-warning"/>
+                </div>
+            </div>
+            
+            <h:dataTable value="#{adherentBean.adherents}" var="adh" 
+                         styleClass="table" rendered="#{not empty adherentBean.adherents}">
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                    #{adh.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Nom</f:facet>
+                    #{adh.nom}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Prénom</f:facet>
+                    #{adh.prenom}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Email</f:facet>
+                    #{adh.email}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Téléphone</f:facet>
+                    #{adh.telephone}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Actions</f:facet>
+                    <h:commandButton value=" Modifier" 
+                                     action="#{adherentBean.editer(adh.id)}" 
+                                     styleClass="btn btn-warning"/>
+                    <h:commandButton value=" Supprimer" 
+                                     action="#{adherentBean.supprimer(adh.id)}" 
+                                     styleClass="btn btn-danger"
+                                     onclick="return confirm('Êtes-vous sûr ?');">
+                        <f:ajax execute="@form" render="@form"/>
+                    </h:commandButton>
+                </h:column>
+            </h:dataTable>
+            
+            <h:panelGroup rendered="#{empty adherentBean.adherents}">
+                <p style="text-align: center; color: #888; margin-top: 30px;">
+                    Aucun adhérent trouvé.
+                </p>
+            </h:panelGroup>
+        </h:form>
+        
+    </ui:define>
+</ui:composition>
+</html>

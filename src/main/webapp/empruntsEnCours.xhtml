@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+<ui:composition template="/template.xhtml">
+    <ui:define name="title">Emprunts en Cours</ui:define>
+    <ui:define name="content">
+        
+        <h2>📋 Emprunts en Cours</h2>
+        
+        <h:form>
+            <div style="margin: 20px 0;">
+                <h:commandButton value="➕ Nouvel Emprunt" 
+                                 action="#{empruntBean.nouveauEmprunt}" 
+                                 styleClass="btn btn-success"/>
+                <h:button value="📚 Voir l'historique" 
+                          outcome="emprunts" 
+                          styleClass="btn btn-primary"/>
+            </div>
+            
+            <h:messages styleClass="messages"/>
+            
+            <h:dataTable value="#{empruntBean.empruntsEnCours}" var="emp" 
+                         styleClass="table" rendered="#{not empty empruntBean.empruntsEnCours}">
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                    #{emp.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Livre</f:facet>
+                    #{empruntBean.getNomLivre(emp.livreId)}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Adhérent</f:facet>
+                    #{empruntBean.getNomAdherent(emp.adherentId)}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Date Emprunt</f:facet>
+                    <!-- ✅ CORRECTION ICI : Convertir LocalDate en String -->
+                    #{emp.dateEmprunt.toString()}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Retour Prévu</f:facet>
+                    <span style="color: #{emp.enRetard ? 'red' : 'green'}; font-weight: bold;">
+                        #{emp.dateRetourPrevue.toString()}
+                    </span>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Statut</f:facet>
+                    <span style="color: #{emp.enRetard ? 'red' : 'orange'}; font-weight: bold;">
+                        #{emp.enRetard ? '🔴 RETARD' : '🟡 En cours'}
+                    </span>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Actions</f:facet>
+                    <h:commandButton value="✅ Retour" 
+                                     action="#{empruntBean.retourner(emp.id)}" 
+                                     styleClass="btn btn-success">
+                        <f:ajax execute="@form" render="@form"/>
+                    </h:commandButton>
+                </h:column>
+            </h:dataTable>
+            
+            <h:panelGroup rendered="#{empty empruntBean.empruntsEnCours}">
+                <p style="text-align: center; color: #888; margin-top: 30px;">
+                    ✅ Aucun emprunt en cours.
+                </p>
+            </h:panelGroup>
+        </h:form>
+        
+    </ui:define>
+</ui:composition>
+</html>

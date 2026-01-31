@@ -7,8 +7,8 @@ public interface ILivreDao {
     
     public Livre save(Livre livre);
     
-    public List<Livre> livresParMotCle(String mc);
-    
+    public List<Livre> livresParMotCle(String mc); 
+   
     public Livre getLivre(int id);
     
     public Livre update(Livre livre);
@@ -17,3 +17,5 @@ public interface ILivreDao {
     
     public List<Livre> getAllLivres();
 }
+
+

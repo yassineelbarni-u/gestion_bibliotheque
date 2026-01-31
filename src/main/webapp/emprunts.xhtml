@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+<ui:composition template="/template.xhtml">
+    <ui:define name="title">Historique des Emprunts</ui:define>
+    <ui:define name="content">
+        
+        <h2>📚 Historique de tous les Emprunts</h2>
+        
+        <h:form>
+            <h:button value="← Retour aux emprunts en cours" 
+                      outcome="empruntsEnCours" 
+                      styleClass="btn btn-primary" 
+                      style="margin-bottom: 20px;"/>
+            
+            <h:dataTable value="#{empruntBean.emprunts}" var="emp" 
+                         styleClass="table" rendered="#{not empty empruntBean.emprunts}">
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                    #{emp.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Livre</f:facet>
+                    #{empruntBean.getNomLivre(emp.livreId)}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Adhérent</f:facet>
+                    #{empruntBean.getNomAdherent(emp.adherentId)}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Date Emprunt</f:facet>
+                    #{emp.dateEmprunt.toString()}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Retour Prévu</f:facet>
+                    #{emp.dateRetourPrevue.toString()}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Retour Effectif</f:facet>
+                    <h:panelGroup rendered="#{emp.dateRetourEffective != null}">
+                        #{emp.dateRetourEffective.toString()}
+                    </h:panelGroup>
+                    <span style="color: orange;" rendered="#{emp.dateRetourEffective == null}">
+                        En cours
+                    </span>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Statut</f:facet>
+                    <span style="color: #{emp.enCours ? 'orange' : 'green'}; font-weight: bold;">
+                        #{emp.enCours ? '🟡 En cours' : '✅ Rendu'}
+                    </span>
+                </h:column>
+            </h:dataTable>
+            
+            <h:panelGroup rendered="#{empty empruntBean.emprunts}">
+                <p style="text-align: center; color: #888; margin-top: 30px;">
+                    Aucun emprunt dans l'historique.
+                </p>
+            </h:panelGroup>
+        </h:form>
+        
+    </ui:define>
+</ui:composition>
+</html>

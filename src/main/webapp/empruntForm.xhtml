@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+<ui:composition template="/template.xhtml">
+    <ui:define name="title">Nouvel Emprunt</ui:define>
+    <ui:define name="content">
+        
+        <h2>➕ Enregistrer un nouvel emprunt</h2>
+        
+        <h:form style="max-width: 500px;">
+            <h:messages globalOnly="true" style="color: red;"/>
+            
+            <div class="form-group" style="margin-bottom: 20px;">
+                <h:outputLabel value="Livre:" for="livre" style="display: block; margin-bottom: 5px; font-weight: bold;"/>
+                <h:selectOneMenu id="livre" value="#{empruntBean.emprunt.livreId}" required="true"
+                                 style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    <f:selectItem itemLabel="-- Sélectionner un livre --" itemValue="" noSelectionOption="true"/>
+                    <f:selectItems value="#{empruntBean.livresDisponibles}" var="livre"
+                                   itemLabel="#{livre.titre} (Stock: #{livre.stock})" 
+                                   itemValue="#{livre.id}"/>
+                </h:selectOneMenu>
+                <h:message for="livre" style="color: red;"/>
+            </div>
+            
+            <div class="form-group" style="margin-bottom: 20px;">
+                <h:outputLabel value="Adhérent:" for="adherent" style="display: block; margin-bottom: 5px; font-weight: bold;"/>
+                <h:selectOneMenu id="adherent" value="#{empruntBean.emprunt.adherentId}" required="true"
+                                 style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    <f:selectItem itemLabel="-- Sélectionner un adhérent --" itemValue="" noSelectionOption="true"/>
+                    <f:selectItems value="#{empruntBean.allAdherents}" var="adh"
+                                   itemLabel="#{adh.nom} #{adh.prenom} (#{adh.email})" 
+                                   itemValue="#{adh.id}"/>
+                </h:selectOneMenu>
+                <h:message for="adherent" style="color: red;"/>
+            </div>
+            
+            <p style="background: #e8f5e9; padding: 15px; border-radius: 5px; color: #2e7d32;">
+                ℹ️ <strong>Info:</strong> L'adhérent dispose de 7 jours pour retourner le livre.
+            </p>
+            
+            <div style="margin-top: 30px;">
+                <h:commandButton value="Enregistrer l'emprunt" 
+                                 action="#{empruntBean.emprunter}"
+                                 styleClass="btn btn-primary"/>
+                
+                <h:button value="Annuler" outcome="empruntsEnCours" styleClass="btn btn-danger"/>
+            </div>
+        </h:form>
+        
+    </ui:define>
+</ui:composition>
+</html>
