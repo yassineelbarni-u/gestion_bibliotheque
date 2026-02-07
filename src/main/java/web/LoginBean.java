@@ -18,8 +18,9 @@ public class LoginBean implements Serializable {
     
     private String username;
     private String password;
+    
     private Utilisateur utilisateurConnecte;
-    private IUtilisateurDao userDao = new UtilisateurDaoImpl();
+    private IUtilisateurDao userDao = new UtilisateurDaoImpl(); //objet de types IUtilisateurDao (la class depend interface User pas implementation de interface couplage faible)
     
     public String login() {
         utilisateurConnecte = userDao.authentifier(username, password);

@@ -11,10 +11,10 @@
         
         <h:form>
             <div style="margin: 20px 0;">
-                <h:commandButton value="➕ Nouvel Emprunt" 
+                <h:commandButton value=" Nouvel Emprunt" 
                                  action="#{empruntBean.nouveauEmprunt}" 
                                  styleClass="btn btn-success"/>
-                <h:button value="📚 Voir l'historique" 
+                <h:button value=" Voir l'historique" 
                           outcome="emprunts" 
                           styleClass="btn btn-primary"/>
             </div>
@@ -37,7 +37,6 @@
                 </h:column>
                 <h:column>
                     <f:facet name="header">Date Emprunt</f:facet>
-                    <!-- ✅ CORRECTION ICI : Convertir LocalDate en String -->
                     #{emp.dateEmprunt.toString()}
                 </h:column>
                 <h:column>

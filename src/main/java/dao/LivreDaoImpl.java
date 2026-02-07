@@ -13,6 +13,7 @@ public class LivreDaoImpl implements ILivreDao {
 
     @Override
     public Livre save(Livre livre) {
+    	
     	// ouvrir la connexion a la base des donnees
         Connection connection = SingletonConnection.getConnection();
         try {
@@ -55,6 +56,7 @@ public class LivreDaoImpl implements ILivreDao {
             
             if (rs.next()) {
                 livre = new Livre();
+                
                 //remplir l'objet avec les donnees (Mapping)
                 livre.setId(rs.getInt("id"));
                 livre.setTitre(rs.getString("titre"));
@@ -66,7 +68,7 @@ public class LivreDaoImpl implements ILivreDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return livre; //return le resultat
+        return livre;
     }
 
     @Override
@@ -111,6 +113,8 @@ public class LivreDaoImpl implements ILivreDao {
             
             while (rs.next()) {
                 Livre livre = new Livre();
+                
+                //remplir l'objet avec les donnees (Mapping)
                 livre.setId(rs.getInt("id"));
                 livre.setTitre(rs.getString("titre"));
                 livre.setAuteur(rs.getString("auteur"));

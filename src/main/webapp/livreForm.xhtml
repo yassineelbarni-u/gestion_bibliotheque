@@ -9,7 +9,7 @@
     </ui:define>
     <ui:define name="content">
         
-        <h2>#{livreBean.livre.id == 0 ? '➕ Ajouter' : '✏️ Modifier'} un livre</h2>
+        <h2>#{livreBean.livre.id == 0 ? ' Ajouter' : ' Modifier'} un livre</h2>
         
         <h:form style="max-width: 500px;">
             <h:inputHidden value="#{livreBean.livre.id}"/>

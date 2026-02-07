@@ -77,8 +77,10 @@
             <h:link outcome="adherents" value="Adhérents"/>
             <h:link outcome="empruntsEnCours" value="Emprunts en cours"/>
             <h:link outcome="emprunts" value="Historique"/>
-            <h:commandLink action="#{loginBean.logout}" value="Déconnexion" 
-                           style="color: #e74c3c;"/>
+            <h:form style="display: inline; margin: 0;">
+                <h:commandLink action="#{loginBean.logout}" value="Deconnexion" 
+                               style="color: #e74c3c;"/>
+            </h:form>
         </div>
     </div>
     

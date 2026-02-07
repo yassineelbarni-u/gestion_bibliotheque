@@ -8,8 +8,8 @@ public class Emprunt implements Serializable {
     private int livreId;
     private int adherentId;
     private LocalDate dateEmprunt;
-    private LocalDate dateRetourPrevue; // = dateEmprunt + 7 jours
-    private LocalDate dateRetourEffective; // null si pas encore rendu
+    private LocalDate dateRetourPrevue; //  dateEmprunt + 7 jours
+    private LocalDate dateRetourEffective;
     
     // Constructeurs, getters, setters
     

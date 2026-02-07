@@ -11,14 +11,14 @@
         
         <h:form>
             <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
-                <h:commandButton value="➕ Ajouter un livre" 
+                <h:commandButton value=" Ajouter un livre" 
                                  action="#{livreBean.nouveauLivre}" 
                                  styleClass="btn btn-success"/>
                 
                 <div class="search-box" style="flex: 1; max-width: 500px;">
                     <h:inputText value="#{livreBean.motCle}" 
                                  placeholder="Rechercher (titre ou auteur)..."/>
-                    <h:commandButton value="🔍 Chercher" 
+                    <h:commandButton value=" Chercher" 
                                      action="#{livreBean.chercher}" 
                                      styleClass="btn btn-primary"/>
                     <h:commandButton value="↻ Tout afficher" 
@@ -51,10 +51,10 @@
                 </h:column>
                 <h:column>
                     <f:facet name="header">Actions</f:facet>
-                    <h:commandButton value="✏️ Modifier" 
+                    <h:commandButton value="Modifier" 
                                      action="#{livreBean.editer(livre.id)}" 
                                      styleClass="btn btn-warning"/>
-                    <h:commandButton value="🗑️ Supprimer" 
+                    <h:commandButton value="Supprimer" 
                                      action="#{livreBean.supprimer(livre.id)}" 
                                      styleClass="btn btn-danger"
                                      onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce livre ?');">
