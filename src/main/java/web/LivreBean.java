@@ -24,13 +24,11 @@ public class LivreBean implements Serializable {
         livres = livreDao.getAllLivres();
     }
     
-    // Méthode pour afficher tous les livres
     public String afficherLivres() {
         livres = livreDao.getAllLivres();
         return "livres?faces-redirect=true";
     }
     
-    // ✅ NOUVELLE MÉTHODE : Gère ajout ET modification
     public String enregistrer() {
         if (livre.getId() == 0) {
             livreDao.save(livre);
@@ -42,7 +40,6 @@ public class LivreBean implements Serializable {
         return "livres?faces-redirect=true";
     }
     
-    // Méthode pour ajouter un livre (garde-la si tu veux, mais pas utilisée maintenant)
     public String ajouter() {
         livreDao.save(livre);
         livre = new Livre();
@@ -50,13 +47,11 @@ public class LivreBean implements Serializable {
         return "livres?faces-redirect=true";
     }
     
-    // Méthode pour préparer l'édition
     public String editer(int id) {
         livre = livreDao.getLivre(id);
         return "livreForm?faces-redirect=true";
     }
     
-    // Méthode pour modifier un livre (garde-la si tu veux, mais pas utilisée maintenant)
     public String modifier() {
         livreDao.update(livre);
         livre = new Livre();
@@ -64,14 +59,13 @@ public class LivreBean implements Serializable {
         return "livres?faces-redirect=true";
     }
     
-    // Méthode pour supprimer un livre
     public String supprimer(int id) {
         livreDao.deleteLivre(id);
         livres = livreDao.getAllLivres();
         return "livres?faces-redirect=true";
     }
     
-    // Méthode de recherche
+
     public String chercher() {
         if (motCle != null && !motCle.isEmpty()) {
             livres = livreDao.livresParMotCle(motCle);
@@ -81,13 +75,14 @@ public class LivreBean implements Serializable {
         return "livres?faces-redirect=true";
     }
     
-    // Préparer l'ajout (nouveau livre)
+
     public String nouveauLivre() {
         livre = new Livre();
         return "livreForm?faces-redirect=true";
     }
     
-    // Getters et Setters
+
+    
     public Livre getLivre() {
         return livre;
     }

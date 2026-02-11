@@ -3,11 +3,6 @@ package web;
 import java.io.Serializable;
 import java.util.List;
 
-import dao.IAdherentDao;
-import dao.AdherentDaoImpl;
-import dao.ILivreDao;
-import dao.LivreDaoImpl;
-
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -16,38 +11,47 @@ import jakarta.inject.Named;
 import metier.entities.Adherent;
 import metier.entities.Emprunt;
 import metier.entities.Livre;
-import metier.service.IEmpruntService;
 import metier.service.EmpruntServiceImpl;
+import metier.service.IEmpruntService;
 
 @Named("empruntBean")
 @SessionScoped
 public class EmpruntBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
 
     private IEmpruntService empruntService = new EmpruntServiceImpl();
 
-    private ILivreDao livreDao = new LivreDaoImpl();
-    private IAdherentDao adherentDao = new AdherentDaoImpl();
-
-
+    // Données
     private Emprunt emprunt = new Emprunt();
-    private List<Emprunt> emprunts;
-    private List<Emprunt> empruntsEnCours;
-
+    private List<Emprunt> emprunts; //historique complet   
+    private List<Emprunt> empruntsEnCours;  // Seulement Livre non rendus
+    
+    
     public EmpruntBean() {
-        empruntsEnCours = empruntService.getEmpruntsEnCours();
-        emprunts = empruntService.getAllEmprunts();
+        refreshListes();
+    }
+
+    // pour eviter de repeter le code a chauqe fois que je veux les donnees
+    private void refreshListes() {
+        this.empruntsEnCours = empruntService.getEmpruntsEnCours();
+        this.emprunts = empruntService.getAllEmprunts();
     }
 
 
     public String emprunter() {
         try {
+            // Appel au Service pour la logique métier
             empruntService.emprunter(emprunt);
-
+            
+            // Réinitialiser le formulaire
             emprunt = new Emprunt();
-            empruntsEnCours = empruntService.getEmpruntsEnCours();
+            
+            // Mettre à jour les tableaux
+            refreshListes();
 
+            
             FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO,
                 "Emprunt enregistré avec succès", null));
@@ -61,16 +65,25 @@ public class EmpruntBean implements Serializable {
             return null;
         }
     }
-
+    
     public String retourner(int id) {
-        empruntService.retourner(id);
-        empruntsEnCours = empruntService.getEmpruntsEnCours();
+        try {
+            empruntService.retourner(id);
+            
+            refreshListes(); 
 
-        FacesContext.getCurrentInstance().addMessage(null,
-            new FacesMessage(FacesMessage.SEVERITY_INFO,
-            "Retour enregistré avec succès", null));
+            FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO,
+                "Retour enregistré avec succès", null));
 
-        return "empruntsEnCours?faces-redirect=true";
+            return "empruntsEnCours?faces-redirect=true";
+            
+        } catch (Exception e) {
+             FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                "Erreur lors du retour", null));
+            return null;
+        }
     }
 
     public String nouveauEmprunt() {
@@ -78,26 +91,30 @@ public class EmpruntBean implements Serializable {
         return "empruntForm?faces-redirect=true";
     }
 
+    
+
     public String getNomLivre(int livreId) {
-        Livre livre = livreDao.getLivre(livreId);
+
+    	Livre livre = empruntService.getLivreParId(livreId);
         return livre != null ? livre.getTitre() : "Inconnu";
     }
 
     public String getNomAdherent(int adherentId) {
-        Adherent adherent = adherentDao.getAdherent(adherentId);
+        Adherent adherent = empruntService.getAdherentParId(adherentId);
         return adherent != null
             ? adherent.getNom() + " " + adherent.getPrenom()
             : "Inconnu";
     }
-
+    
     public List<Livre> getLivresDisponibles() {
-        return livreDao.getAllLivres();
+        return empruntService.getAllLivres();
     }
 
     public List<Adherent> getAllAdherents() {
-        return adherentDao.getAllAdherents();
+        return empruntService.getAllAdherents();
     }
 
+    //  Getters / Setters  
     public Emprunt getEmprunt() {
         return emprunt;
     }

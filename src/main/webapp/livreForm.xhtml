@@ -4,43 +4,89 @@
       xmlns:f="jakarta.faces.core"
       xmlns:ui="jakarta.faces.facelets">
 <ui:composition template="/template.xhtml">
+    
     <ui:define name="title">
         #{livreBean.livre.id == 0 ? 'Ajouter' : 'Modifier'} un livre
     </ui:define>
+
     <ui:define name="content">
         
+        <style>
+            .form-container {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+            .form-group {
+                margin-bottom: 20px;
+            }
+            .form-label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+                color: #333;
+            }
+            .form-input {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                box-sizing: border-box;
+                font-size: 14px;
+            }
+            .form-input:focus {
+                border-color: #007bff;
+                outline: none;
+                box-shadow: 0 0 5px rgba(0,123,255,0.2);
+            }
+            .error-message {
+                color: #dc3545;
+                font-size: 0.9em;
+                margin-top: 5px;
+                display: block;
+            }
+            .form-actions {
+                margin-top: 30px;
+                display: flex;
+                gap: 10px;
+            }
+        </style>
+
         <h2>#{livreBean.livre.id == 0 ? ' Ajouter' : ' Modifier'} un livre</h2>
         
-        <h:form style="max-width: 500px;">
+        <h:form styleClass="form-container">
             <h:inputHidden value="#{livreBean.livre.id}"/>
             
-            <div class="form-group" style="margin-bottom: 20px;">
-                <h:outputLabel value="Titre:" for="titre" style="display: block; margin-bottom: 5px; font-weight: bold;"/>
+            <div class="form-group">
+                <h:outputLabel value="Titre :" for="titre" styleClass="form-label"/>
                 <h:inputText id="titre" value="#{livreBean.livre.titre}" required="true"
-                             style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"/>
-                <h:message for="titre" style="color: red;"/>
+                             styleClass="form-input"
+                             requiredMessage="Le titre du livre est obligatoire."/>
+                <h:message for="titre" styleClass="error-message"/>
             </div>
             
-            <div class="form-group" style="margin-bottom: 20px;">
-                <h:outputLabel value="Auteur:" for="auteur" style="display: block; margin-bottom: 5px; font-weight: bold;"/>
+            <div class="form-group">
+                <h:outputLabel value="Auteur :" for="auteur" styleClass="form-label"/>
                 <h:inputText id="auteur" value="#{livreBean.livre.auteur}" required="true"
-                             style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"/>
-                <h:message for="auteur" style="color: red;"/>
+                             styleClass="form-input"
+                             requiredMessage="Le nom de l'auteur est obligatoire."/>
+                <h:message for="auteur" styleClass="error-message"/>
             </div>
             
-            <div class="form-group" style="margin-bottom: 20px;">
-                <h:outputLabel value="Stock:" for="stock" style="display: block; margin-bottom: 5px; font-weight: bold;"/>
+            <div class="form-group">
+                <h:outputLabel value="Stock :" for="stock" styleClass="form-label"/>
                 <h:inputText id="stock" value="#{livreBean.livre.stock}" required="true"
-                             style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                             styleClass="form-input"
+                             requiredMessage="Le stock est obligatoire."
+                             converterMessage="Le stock doit être un nombre entier.">
                     <f:validateLongRange minimum="0"/>
                 </h:inputText>
-                <h:message for="stock" style="color: red;"/>
+                <h:message for="stock" styleClass="error-message"/>
             </div>
             
-            <div style="margin-top: 30px;">
+            <div class="form-actions">
                 <h:commandButton 
                     value="#{livreBean.livre.id == 0 ? 'Ajouter' : 'Modifier'}" 
-                        action="#{livreBean.enregistrer}"
+                    action="#{livreBean.enregistrer}"
                     styleClass="btn btn-primary"/>
                 
                 <h:button value="Annuler" outcome="livres" styleClass="btn btn-danger"/>

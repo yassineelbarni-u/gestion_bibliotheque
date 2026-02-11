@@ -1,27 +1,31 @@
-
- package metier.service;
+package metier.service;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import dao.AdherentDaoImpl;
 import dao.EmpruntDaoImpl;
+import dao.IAdherentDao;
 import dao.IEmpruntDao;
 import dao.ILivreDao;
 import dao.LivreDaoImpl;
+import metier.entities.Adherent;
 import metier.entities.Emprunt;
 import metier.entities.Livre;
 
 public class EmpruntServiceImpl implements IEmpruntService {
 
-     private IEmpruntDao empruntDao = new EmpruntDaoImpl();
+    private IEmpruntDao empruntDao = new EmpruntDaoImpl();
     private ILivreDao livreDao = new LivreDaoImpl();
+    private IAdherentDao adherentDao = new AdherentDaoImpl(); 
 
+ 
     @Override
     public Emprunt emprunter(Emprunt emprunt) {
 
-        Livre livre = livreDao.getLivre(emprunt.getLivreId());
+    	Livre livre = livreDao.getLivre(emprunt.getLivreId());
 
-        if(livre ==null){
+        if(livre == null){
             throw new RuntimeException("Livre non trouvé");
         }
 
@@ -29,18 +33,17 @@ public class EmpruntServiceImpl implements IEmpruntService {
             throw new RuntimeException("Livre en rupture de stock");
         }
 
-        // date d'emprunt
-
         emprunt.setDateEmprunt(LocalDate.now());
 
-        return empruntDao.save(emprunt);
-
+        return empruntDao.save(emprunt); 
     }
 
     @Override
     public Emprunt retourner(int id) {
         return empruntDao.retourner(id);
     }
+
+
 
     @Override
     public List<Emprunt> getEmpruntsEnCours() {
@@ -52,5 +55,25 @@ public class EmpruntServiceImpl implements IEmpruntService {
         return empruntDao.getAllEmprunts();
     }
 
-    
+
+    @Override
+    public List<Livre> getAllLivres() {
+        return livreDao.getAllLivres();
+    }
+
+    @Override
+    public List<Adherent> getAllAdherents() {
+        return adherentDao.getAllAdherents();
+    }
+
+    @Override
+    public Livre getLivreParId(int id) {
+        return livreDao.getLivre(id);
+    }
+
+    @Override
+    public Adherent getAdherentParId(int id) {
+        return adherentDao.getAdherent(id);
+    }
+
 }

@@ -19,19 +19,20 @@ public class EmpruntDaoImpl implements IEmpruntDao {
         	
             // Calculer dateRetourPrevue = dateEmprunt + 7 jrs
             LocalDate dateRetourPrevue = emprunt.getDateEmprunt().plusDays(7);
-            
             emprunt.setDateRetourPrevue(dateRetourPrevue);
             
             PreparedStatement ps = connection.prepareStatement(
                 "INSERT INTO emprunts(livre_id, adherent_id, date_emprunt, date_retour_prevue) VALUES(?, ?, ?, ?)"
             );
+            
             ps.setInt(1, emprunt.getLivreId());
             ps.setInt(2, emprunt.getAdherentId());
             ps.setDate(3, java.sql.Date.valueOf(emprunt.getDateEmprunt()));
             ps.setDate(4, java.sql.Date.valueOf(dateRetourPrevue));
             ps.executeUpdate();
             
-            // Récupérer l'ID auto-généré
+            
+            // Recuperer l'ID auto-genere
             PreparedStatement ps2 = connection.prepareStatement("SELECT MAX(id) AS MAXID FROM emprunts");
             ResultSet rs = ps2.executeQuery();
             if(rs.next()) {
@@ -61,6 +62,7 @@ public class EmpruntDaoImpl implements IEmpruntDao {
         List<Emprunt> emprunts = new ArrayList<>();
         Connection connection = SingletonConnection.getConnection();
         try {
+        	
         	// pas en cours retourne
             PreparedStatement ps = connection.prepareStatement(
                 "SELECT * FROM emprunts WHERE date_retour_effective IS NULL ORDER BY date_emprunt DESC"
@@ -97,11 +99,13 @@ public class EmpruntDaoImpl implements IEmpruntDao {
         List<Emprunt> emprunts = new ArrayList<>();
         Connection connection = SingletonConnection.getConnection();
         try {
+        	
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM emprunts ORDER BY id DESC");
             ResultSet rs = ps.executeQuery();
             
             while (rs.next()) {
                 Emprunt emprunt = new Emprunt();
+                
                 emprunt.setId(rs.getInt("id"));
                 emprunt.setLivreId(rs.getInt("livre_id"));
                 emprunt.setAdherentId(rs.getInt("adherent_id"));
@@ -155,6 +159,7 @@ public class EmpruntDaoImpl implements IEmpruntDao {
 
     @Override
     public Emprunt retourner(int id) {
+    	
         Emprunt emprunt = getEmprunt(id);
         if (emprunt != null && emprunt.isEnCours()) {
             Connection connection = SingletonConnection.getConnection();
@@ -163,8 +168,9 @@ public class EmpruntDaoImpl implements IEmpruntDao {
                 PreparedStatement ps = connection.prepareStatement(
                     "UPDATE emprunts SET date_retour_effective = ? WHERE id = ?"
                 );
-                ps.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
+                ps.setDate(1, java.sql.Date.valueOf(LocalDate.now())); // Date d'aujourd'hui
                 ps.setInt(2, id);
+                
                 ps.executeUpdate();
                 
                 // Incrémenter le stock du livre
@@ -172,6 +178,7 @@ public class EmpruntDaoImpl implements IEmpruntDao {
                 psStock.setInt(1, emprunt.getLivreId());
                 psStock.executeUpdate();
                 
+                //Mise a jour de l'objet Java (Synchronisation)
                 emprunt.setDateRetourEffective(LocalDate.now());
                 
                 ps.close();

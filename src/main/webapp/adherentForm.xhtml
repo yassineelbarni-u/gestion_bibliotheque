@@ -4,46 +4,91 @@
       xmlns:f="jakarta.faces.core"
       xmlns:ui="jakarta.faces.facelets">
 <ui:composition template="/template.xhtml">
+    
     <ui:define name="title">
         #{adherentBean.adherent.id == 0 ? 'Ajouter' : 'Modifier'} un adhérent
     </ui:define>
+
     <ui:define name="content">
         
-        <h2>#{adherentBean.adherent.id == 0 ? '➕ Ajouter' : '✏️ Modifier'} un adhérent</h2>
+        <style>
+            .form-container {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+            .form-group {
+                margin-bottom: 20px;
+            }
+            .form-label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+                color: #333;
+            }
+            .form-input {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                box-sizing: border-box;
+                font-size: 14px;
+            }
+            .form-input:focus {
+                border-color: #007bff;
+                outline: none;
+                box-shadow: 0 0 5px rgba(0,123,255,0.2);
+            }
+            .error-message {
+                color: #dc3545;
+                font-size: 0.9em;
+                margin-top: 5px;
+                display: block;
+            }
+            .form-actions {
+                margin-top: 30px;
+                display: flex;
+                gap: 10px; 
+            }
+        </style>
+
+        <h2>#{adherentBean.adherent.id == 0 ? ' Ajouter' : ' Modifier'} un adhérent</h2>
         
-        <h:form style="max-width: 500px;">
+        <h:form styleClass="form-container">
             <h:inputHidden value="#{adherentBean.adherent.id}"/>
             
-            <div class="form-group" style="margin-bottom: 20px;">
-                <h:outputLabel value="Nom:" for="nom" style="display: block; margin-bottom: 5px; font-weight: bold;"/>
+            <div class="form-group">
+                <h:outputLabel value="Nom:" for="nom" styleClass="form-label"/>
                 <h:inputText id="nom" value="#{adherentBean.adherent.nom}" required="true"
-                             style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"/>
-                <h:message for="nom" style="color: red;"/>
+                             styleClass="form-input"
+                             requiredMessage="Le nom est obligatoire."/>
+                <h:message for="nom" styleClass="error-message"/>
             </div>
             
-            <div class="form-group" style="margin-bottom: 20px;">
-                <h:outputLabel value="Prénom:" for="prenom" style="display: block; margin-bottom: 5px; font-weight: bold;"/>
+            <div class="form-group">
+                <h:outputLabel value="Prénom:" for="prenom" styleClass="form-label"/>
                 <h:inputText id="prenom" value="#{adherentBean.adherent.prenom}" required="true"
-                             style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"/>
-                <h:message for="prenom" style="color: red;"/>
+                             styleClass="form-input"
+                             requiredMessage="Le prénom est obligatoire."/>
+                <h:message for="prenom" styleClass="error-message"/>
             </div>
             
-            <div class="form-group" style="margin-bottom: 20px;">
-                <h:outputLabel value="Email:" for="email" style="display: block; margin-bottom: 5px; font-weight: bold;"/>
+            <div class="form-group">
+                <h:outputLabel value="Email:" for="email" styleClass="form-label"/>
                 <h:inputText id="email" value="#{adherentBean.adherent.email}" required="true"
-                             style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                             styleClass="form-input"
+                             requiredMessage="L'email est obligatoire.">
                     <f:validateRegex pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"/>
                 </h:inputText>
-                <h:message for="email" style="color: red;"/>
+                <h:message for="email" styleClass="error-message"/>
             </div>
             
-            <div class="form-group" style="margin-bottom: 20px;">
-                <h:outputLabel value="Téléphone:" for="telephone" style="display: block; margin-bottom: 5px; font-weight: bold;"/>
+            <div class="form-group">
+                <h:outputLabel value="Téléphone:" for="telephone" styleClass="form-label"/>
                 <h:inputText id="telephone" value="#{adherentBean.adherent.telephone}"
-                             style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"/>
+                             styleClass="form-input"/>
             </div>
             
-            <div style="margin-top: 30px;">
+            <div class="form-actions">
                 <h:commandButton 
                     value="#{adherentBean.adherent.id == 0 ? 'Ajouter' : 'Modifier'}" 
                     action="#{adherentBean.enregistrer}"

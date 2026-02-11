@@ -5,8 +5,8 @@ public class Utilisateur implements Serializable {
     private static final long serialVersionUID = 1L;
     private int id;
     private String username;
-    private String password; // haché en bcrypt/SHA256 dans la BD
-    private String role; // ex: "BIBLIOTHECAIRE"
+    private String password;
+    private String role;
     
     
 	public Utilisateur() {

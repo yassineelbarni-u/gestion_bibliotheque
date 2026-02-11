@@ -15,26 +15,26 @@ public class AdherentBean implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
+    
     private IAdherentDao adherentDao = new AdherentDaoImpl();
+    
     private Adherent adherent = new Adherent();
     private List<Adherent> adherents;
     private String motCle;
     
     public AdherentBean() {
+    	
         adherents = adherentDao.getAllAdherents();
     }
+    
     
     public String afficherAdherents() {
         adherents = adherentDao.getAllAdherents();
         return "adherents?faces-redirect=true";
     }
     
-    public String ajouter() {
-        adherentDao.save(adherent);
-        adherent = new Adherent();
-        adherents = adherentDao.getAllAdherents();
-        return "adherents?faces-redirect=true";
-    }
+   
+    
     
     public String enregistrer() {
         if (adherent.getId() == 0) {
@@ -52,12 +52,7 @@ public class AdherentBean implements Serializable {
         return "adherentForm?faces-redirect=true";
     }
     
-    public String modifier() {
-        adherentDao.update(adherent);
-        adherent = new Adherent();
-        adherents = adherentDao.getAllAdherents();
-        return "adherents?faces-redirect=true";
-    }
+  
     
     public String supprimer(int id) {
         adherentDao.deleteAdherent(id);
@@ -78,6 +73,7 @@ public class AdherentBean implements Serializable {
         adherent = new Adherent();
         return "adherentForm?faces-redirect=true";
     }
+    
     
     // Getters et Setters
     public Adherent getAdherent() {

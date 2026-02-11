@@ -54,7 +54,7 @@
       <version>8.3.0</version>
     </dependency>
     
-    <!-- JSF Implementation (Mojarra) avec exclusion angus -->
+    <!-- JSF Implementation ( Mojarra ) -->
     <dependency>
       <groupId>org.glassfish</groupId>
       <artifactId>jakarta.faces</artifactId>
@@ -67,7 +67,8 @@
       </exclusions>
     </dependency>
 
-    <!-- CDI Implementation (Weld for Tomcat) -->
+
+    <!-- CDI Implementation (librairie Weld for Tomcat) -->
     <dependency>
       <groupId>org.jboss.weld.servlet</groupId>
       <artifactId>weld-servlet-shaded</artifactId>
@@ -80,12 +81,15 @@
       <artifactId>jakarta.persistence-api</artifactId>
       <version>3.1.0</version>
     </dependency>
+    
 
   </dependencies>
 
   <build>
     <finalName>gestion_bib</finalName>
     <plugins>
+    
+    
       <!-- Maven Compiler Plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -95,6 +99,7 @@
           <release>21</release>
         </configuration>
       </plugin>
+
 
       <!-- Maven WAR Plugin -->
       <plugin>
